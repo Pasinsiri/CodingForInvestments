@@ -41,11 +41,12 @@ class AlphaVantageReader():
         else:
             return float(v)
 
-    def _convert_float(self, raw: pd.DataFrame):
+    def _convert_float(self, raw: pd.DataFrame, cast_index_to_datetime:bool = True):
         """convert specific columns in a dataframe to float
 
         Args:
             raw (pd.DataFrame): a DataFrame
+            cast_index_to_datetime (bool): if True, the dataframe's index will be cast as datetime. Defaults to True
 
         Returns:
             pd.DataFrame: a float-converted dataframe
@@ -56,7 +57,9 @@ class AlphaVantageReader():
                 df[c] = df[c].apply(self._try_float)
             except:
                 pass
-        return df
+        if cast_index_to_datetime:
+            df.index = pd.to_datetime(df.index)
+        return df.sort_index()
 
     # * Economic Data
     def get_fed_funds_rate(self, mode:str = 'daily'):
