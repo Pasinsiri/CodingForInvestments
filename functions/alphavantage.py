@@ -172,7 +172,7 @@ class AlphaVantageReader():
 
         df = pd.concat([pd.Series(q) for q in raw_array], axis = 1).T.set_index('fiscalDateEnding')
         df.index = pd.to_datetime(df.index)
-        return self._convert_float(df.sort_index())
+        return self._convert_float(df)
 
 
     # * Technical data
