@@ -41,23 +41,21 @@ class AlphaVantageReader():
         else:
             return float(v)
 
-    def _convert_float(self, raw: pd.DataFrame, excepted_keywords:list = ['date']):
+    def _convert_float(self, raw: pd.DataFrame):
         """convert specific columns in a dataframe to float
 
         Args:
             raw (pd.DataFrame): a DataFrame
-            excepted_keywords (list, optional): a list of columns to be ignored in the conversion process (e.g. date columns). Defaults to ['date'].
 
         Returns:
             pd.DataFrame: a float-converted dataframe
         """
         df = raw.copy()
         for c in df.columns:
-            for k in excepted_keywords:
-                if k in c.lower():
-                    pass 
-                else:
-                    df[c] = df[c].apply(self._try_float)
+            try:
+                df[c] = df[c].apply(self._try_float)
+            except:
+                pass
         return df
 
     # * Economic Data
