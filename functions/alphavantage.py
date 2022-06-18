@@ -170,7 +170,8 @@ class AlphaVantageReader():
             raise ValueError('mode not found, can be either quarterly or annual')
 
         df = pd.concat([pd.Series(q) for q in raw_array], axis = 1).T.set_index('fiscalDateEnding')
-        return self._convert_float(df)
+        df.index = pd.to_datetime(df.index)
+        return self._convert_float(df.sort_index())
 
 
     # * Technical data
